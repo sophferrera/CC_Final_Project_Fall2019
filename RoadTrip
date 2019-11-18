@@ -1,0 +1,248 @@
+RoadTrip
+
+//A FORK OF https://www.openprocessing.org/sketch/645434
+//TO CONVERT TO p5.js
+
+Neartree [] neartrees = new Neartree[20]; //new array of near tree objects 
+Tree [] trees = new Tree[300]; //new array of tree objects 
+Statictree [] statictrees = new Statictree[50]; //new array of static tree objects 
+Stripe []stripes = new Stripe[70]; //new array of stripe objects 
+float a; //float 
+
+void setup() {
+size(800,600);
+  translate(width/2,height/2);
+  
+     for(int i=0; i<stripes.length; i++){
+    stripes[i]=new Stripe();
+      }
+  
+    for(int i=0; i<neartrees.length; i++){
+    neartrees[i]=new Neartree();
+    }
+      for(int i=0; i<trees.length; i++){
+    trees[i]=new Tree();
+      }
+    
+          for(int i=0; i<statictrees.length; i++){
+    statictrees[i]=new Statictree();
+  }
+  }
+
+
+void draw() {
+    translate(width/2,height/2);
+    background(100,100,255);
+    fill(70,35,3);
+    rectMode(CORNER);
+    rect(-width/2,0,width,height/2);
+    fill(0);
+    quad(6,0,-5,0,-width/5,height/2,width/5+5,height/2);
+    if(frameCount<1050){
+       fill(70,70,5);
+    quad(-6,height/2,-1.7,height/2,0,0,-0.5,0);
+    quad(6,height/2,1.7,height/2,0,0,0.5,0);
+    }
+       for(int i=0; i<stripes.length; i++){
+       if(frameCount>15*i){
+      stripes[i].display();
+       }
+      }
+
+    
+        for(int i=0; i<statictrees.length; i++){
+      statictrees[i].display();
+       }
+      
+
+    
+      for(int i=0; i<trees.length; i++){
+       if(frameCount>10*i){
+      trees[i].display();
+       }
+      }
+
+     for(int i=0; i<neartrees.length; i++){
+       if(frameCount>150*i){
+      neartrees[i].display();
+       }
+}
+float a= 230-frameCount/10;
+//if(frameCount>2540){
+//  a=0;
+//}
+fill(0,0,0,a);
+rect(0,0,width,height);
+fill(255,0.4*a);
+//textMode(CENTER);
+}
+
+class Stripe {
+  float scalar;
+  float x;
+  float y;
+  
+  Stripe() {
+    scalar=150;
+    //x=100/scalar;
+    //y=200/scalar;
+  }
+  
+  void display(){
+     x=7/scalar;
+    y=300/scalar;
+    
+    fill(70,70,5);
+    quad(-x,y,0,y,0,1.5*y,-1.5*x,1.5*y);
+    if(scalar<1){
+      scalar=150;
+    }
+    scalar=scalar-0.14;
+  }
+}
+    
+
+class Neartree {
+  color trunkcolor;
+  color leafcolor;
+  float ho;
+  float wo;
+  float xo;
+  float yo;
+  float h;
+  float w;
+  float x;
+  float y;
+  int side;
+  float scalar;
+  float r;
+  
+  Neartree() {
+    trunkcolor = color(20,20,3);
+    leafcolor=color(0,60,6);
+    ho=random(height/4,height/2.2);
+    wo= random(width/20, width/10);
+    xo=random(width, 3*width);
+    yo=0.6*height; 
+    side=-1;
+    r=random(0,2);
+    if(r>1){
+      side=1;
+    }
+    scalar=150;
+  }
+  
+  void display(){
+    x=side*xo/scalar;
+    y=yo/scalar;
+    h=ho/scalar;
+    w=wo/scalar;
+    
+    noStroke();
+    fill(trunkcolor);
+    rectMode(CENTER);
+    rect(x,y,2*w,2*h);
+    fill(leafcolor);
+    triangle(x+4*w,y-h,x-4*w,y-h,x,y-4.5*h);
+    triangle(x+3.5*w,y-2*h,x-3.5*w,y-2*h,x,y-5.2*h);
+    triangle(x+3*w,y-2.8*h,x-3*w,y-2.8*h,x,y-5.7*h);
+    
+    if(scalar<1.2){
+      scalar=150;
+    }   
+    scalar=scalar-0.15;   
+  }
+}
+
+
+
+class Tree {
+  color trunkcolor;
+  color leafcolor;
+  float ho;
+  float wo;
+  float xo;
+  float yo;
+  float h;
+  float w;
+  float x;
+  float y;
+  int side;
+  float scalar;
+  float r;
+  
+  Tree() {
+    trunkcolor = color(20,25,0);
+    leafcolor=color(5,50,2);
+    ho=random(height/4,height/2.2);
+    wo= random(width/20, width/10);
+    xo=random(6*width, 20*width);
+    yo=0.6*height; 
+    side=-1;
+    r=random(0,2);
+    if(r>1){
+      side=1;
+    }
+    scalar=150;
+  }
+  
+  void display(){
+    x=side*xo/scalar;
+    y=yo/scalar;
+    h=ho/scalar;
+    w=wo/scalar;
+    
+    noStroke();
+    fill(trunkcolor);
+    rectMode(CENTER);
+    rect(x,y,2*w,2*h);
+    fill(leafcolor);
+    triangle(x+4*w,y-h,x-4*w,y-h,x,y-4.5*h);
+    triangle(x+3.5*w,y-2*h,x-3.5*w,y-2*h,x,y-5.2*h);
+    triangle(x+3*w,y-2.8*h,x-3*w,y-2.8*h,x,y-5.7*h);
+    
+    if(scalar<4){
+      scalar=150;
+    }   
+    scalar=scalar-0.15;   
+  }
+}
+
+class Statictree {
+  color trunkcolor;
+  color leafcolor;
+  float h;
+  float w;
+  float x;
+  float y;
+  int side;
+  float r;
+  
+  Statictree() {
+    trunkcolor = color(30,30,5);
+    leafcolor=color(0,70,10);
+    h=random(0.5,1);
+    w= random(0.2,0.5);
+    x=random(-width/20, width/20);
+    y=random(2); 
+    side=-1;
+    r=random(0,20);
+    if(r>1){
+      side=1;
+    }
+   
+  }
+  
+  void display(){
+    
+    noStroke();
+    fill(trunkcolor);
+    rectMode(CENTER);
+    rect(x,y,2*w,2*h);
+    fill(leafcolor);
+    triangle(x+4*w,y-h,x-4*w,y-h,x,y-4.5*h);
+    triangle(x+3.5*w,y-2*h,x-3.5*w,y-2*h,x,y-5.2*h);
+    triangle(x+3*w,y-2.8*h,x-3*w,y-2.8*h,x,y-5.7*h);
+     
+  }
+}
