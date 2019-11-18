@@ -9,22 +9,22 @@ Statictree [] statictrees = new Statictree[50]; //new array of static tree objec
 Stripe []stripes = new Stripe[70]; //new array of stripe objects 
 float a; //float 
 
-void setup() {
-size(800,600);
+void setup() { 
+createCanvas(800,600); //600 by 800 window 
   translate(width/2,height/2);
   
-     for(int i=0; i<stripes.length; i++){
+     for(var i=0; i<stripes.length; i++){
     stripes[i]=new Stripe();
       }
   
-    for(int i=0; i<neartrees.length; i++){
+    for(var i=0; i<neartrees.length; i++){
     neartrees[i]=new Neartree();
     }
-      for(int i=0; i<trees.length; i++){
+      for(var i=0; i<trees.length; i++){
     trees[i]=new Tree();
       }
     
-          for(int i=0; i<statictrees.length; i++){
+          for(var i=0; i<statictrees.length; i++){
     statictrees[i]=new Statictree();
   }
   }
@@ -43,31 +43,31 @@ void draw() {
     quad(-6,height/2,-1.7,height/2,0,0,-0.5,0);
     quad(6,height/2,1.7,height/2,0,0,0.5,0);
     }
-       for(int i=0; i<stripes.length; i++){
+       for(var i=0; i<stripes.length; i++){
        if(frameCount>15*i){
       stripes[i].display();
        }
       }
 
     
-        for(int i=0; i<statictrees.length; i++){
+        for(var i=0; i<statictrees.length; i++){
       statictrees[i].display();
        }
       
 
     
-      for(int i=0; i<trees.length; i++){
+      for(var i=0; i<trees.length; i++){
        if(frameCount>10*i){
       trees[i].display();
        }
       }
 
-     for(int i=0; i<neartrees.length; i++){
+     for(var i=0; i<neartrees.length; i++){
        if(frameCount>150*i){
       neartrees[i].display();
        }
 }
-float a= 230-frameCount/10;
+var a= 230-frameCount/10;
 //if(frameCount>2540){
 //  a=0;
 //}
@@ -78,9 +78,9 @@ fill(255,0.4*a);
 }
 
 class Stripe {
-  float scalar;
-  float x;
-  float y;
+  var scalar;
+  var x;
+  var y;
   
   Stripe() {
     scalar=150;
@@ -103,19 +103,19 @@ class Stripe {
     
 
 class Neartree {
-  color trunkcolor;
-  color leafcolor;
-  float ho;
-  float wo;
-  float xo;
-  float yo;
-  float h;
-  float w;
-  float x;
-  float y;
-  int side;
-  float scalar;
-  float r;
+  var trunkcolor;
+  var leafcolor;
+  var ho;
+  var wo;
+  var xo;
+  var yo;
+  var h;
+  var w;
+  var x;
+  var y;
+  var side;
+  var scalar;
+  var r;
   
   Neartree() {
     trunkcolor = color(20,20,3);
@@ -157,19 +157,19 @@ class Neartree {
 
 
 class Tree {
-  color trunkcolor;
-  color leafcolor;
-  float ho;
-  float wo;
-  float xo;
-  float yo;
-  float h;
-  float w;
-  float x;
-  float y;
-  int side;
-  float scalar;
-  float r;
+  var trunkcolor;
+  var leafcolor;
+  var ho;
+  var wo;
+  var xo;
+  var yo;
+  var h;
+  var w;
+  var x;
+  var y;
+  var side;
+  var scalar;
+  var r;
   
   Tree() {
     trunkcolor = color(20,25,0);
@@ -209,14 +209,14 @@ class Tree {
 }
 
 class Statictree {
-  color trunkcolor;
-  color leafcolor;
-  float h;
-  float w;
-  float x;
-  float y;
-  int side;
-  float r;
+  var trunkcolor;
+  var leafcolor;
+  var h;
+  var w;
+  var x;
+  var y;
+  var side;
+  var r;
   
   Statictree() {
     trunkcolor = color(30,30,5);
