@@ -65,4 +65,141 @@ class Stripe {
   }
 }
 
+//RoadTrip
+
+//Stripes kept from a fork of https://www.openprocessing.org/sketch/645434
+let stripes = [70]; //new array of stripe objects 
+var snowflakes = [];
+let flakes = 300; //limit of snowflakes 
+var xPos;
+var yPos;
+var c;
+var wh;
+var speedX;
+var speedY; 
+
+//var jeep; 
+
+function preload(){
+//  jeep = loadAnimation('jeep1.png','jeep12.png');
+  
+}
+
+function setup() {
+createCanvas(800,600);
+  translate(width/2,height/2);
+  
+     for(var i=0; i<stripes.length; i++){ //for each indice in stripes, create a new instance of that object 
+    stripes[i]=new Stripe();
+      }
+  
+    for(var y = 0; y < flakes; y++){
+      xPos = random(0, width); //random x position
+      yPos = random(0, height); //random y position
+      speedy = random(0.5, 3);
+      speedX = random(0.02,0.5);
+      c = color(255, 255, 255, random(30, 200));
+      wh = random(3, 10); //random width/height 
+      snowflakes.push(new Snow(xPos, yPos, speedX, speedY, wh, wh, c));
+    }
+}
+
+
+function draw() {
+  //  animation(jeep, width/2, height/2);
+    push();
+    translate(width/2,height/2); //middle of screen
+    background('#52B1FF'); //background color (for now) 
+    fill('#C29D49'); //fill color (for now)
+    rectMode(CORNER); //corner mode of rect
+    rect(-width/2,0,width,height/2); //rect the size of the bottom half of the screen
+    fill(0);
+    quad(6,0,-5,0,-width/5,height/2,width/5+5,height/2); //rect for road 
+    if(frameCount<1050){ //if framecount is less than 1050 
+       fill(70,70,5);
+    quad(-6,height/2,-1.7,height/2,0,0,-0.5,0); //left yellow line 
+    quad(6,height/2,1.7,height/2,0,0,0.5,0); //right yellow line 
+    pop();
+    }
+  
+       for(var i=0; i<stripes.length; i++){ //for each indice in stripes 
+       if(frameCount>15*i)  //if framecount is greater than 15 times that indice
+      stripes[i].display(); //display that stripe 
+       }
+  
+  if (millis()>0 && millis()<11000){ //within timeframe
+      snow(); //winter scene
+  }
+  // if (millis()>11000 && millis()<49000){ //within timeframe
+  // mountain(); //mountain scene
+  // } 
+  // if (millis()>17000 && millis()<57000){  //within timeframe
+  // desert(); //desert scene
+  // }
+  // if (millis()>19000 && millis()<66000){  //within timeframe
+  // city(); //city scene 
+  // }
+  // if (millis()>19000 && millis()<66000){  //within timeframe
+  // beach(); //beach scene 
+  // }
+  
+    }
+
+
+function snow(){
+  for(var i = 0; i < snowflakes.length; i++){
+    snowflakes[i].move();
+    snowflakes[i].show();
+    snowflakes[i].makeMore();
+  }
+}
+
+    
+class Stripe {
+  
+  constructor(){
+    this.scalar = 150; //scalar value of 150 
+    this.x = 7/this.scalar; //x value of 7/150 //speed of space between yellow lines  
+    this.y = 300/this.scalar; //y value of 300/150 //
+  }
+
+  
+ display(){ 
+    
+    fill(70,70,5);
+   quad((-(this.x),this.y,0,this.y,0,1.5*this.y,-1.5*this.x,1.5*this.y)); //keeps far yellow lines in far perspective 
+    if(this.scalar<1){ //if the scalar is less than 1 
+      this.scalar=150; //set it back to 150 
+    }
+    this.scalar=this.scalar-0.14; //this instance of scalar -.14 
+  }
+}
+
+class Snow{
+  constuctor(x, y, sX, sY, w, h, c){
+    this.xPosi = x;
+    this.yPosi = y;
+    this.xSpeed = sX;
+    this.ySpeed = sY;
+    this.width = w;
+    this.height = h;
+    this.col = c;
+  }
+
+  move(){
+    this.xPosi += this.xSpeed;
+    this.yPosi += this.ySpeed;
+  }
+
+  show(){
+    fill(this.col);
+    ellipse(this.xPosi, this.yPosi, this.width, this.height);
+  }
+
+  makeMore(){
+    if(this.yPosi > height){
+      this.yPosi = 0;
+    }
+  }
+}
     
