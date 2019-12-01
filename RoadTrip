@@ -1,82 +1,11 @@
 //RoadTrip
-
-//Stripes kept from a fork of https://www.openprocessing.org/sketch/645434
-
-let stripes = [70]; //new array of stripe objects 
-//var jeep; 
-
-function preload(){
-//	jeep = loadAnimation('jeep1.png','jeep12.png');
-	
-}
-
-function setup() {
-createCanvas(800,600);
-  translate(width/2,height/2);
-  
-     for(var i=0; i<stripes.length; i++){ //for each indice in stripes, create a new instance of that object 
-    stripes[i]=new Stripe();
-      }
-}
-
-
-function draw() {
-	//	animation(jeep, width/2, height/2);
-		push();
-    translate(width/2,height/2); //middle of screen
-    background(100,100,255); //background color (for now) 
-    fill(70,35,3); //fill color (for now)
-    rectMode(CORNER); //corner mode of rect
-    rect(-width/2,0,width,height/2); //rect the size of the bottom half of the screen
-    fill(0);
-    quad(6,0,-5,0,-width/5,height/2,width/5+5,height/2); //rect for road 
-    if(frameCount<1050){ //if framecount is less than 1050 
-       fill(70,70,5);
-    quad(-6,height/2,-1.7,height/2,0,0,-0.5,0); //left yellow line 
-    quad(6,height/2,1.7,height/2,0,0,0.5,0); //right yellow line 
-		pop();
-    }
-	
-       for(var i=0; i<stripes.length; i++){ //for each indice in stripes 
-       if(frameCount>15*i)  //if framecount is greater than 15 times that indice
-      stripes[i].display(); //display that stripe 
-       }
-		}
-
-
-
-class Stripe {
-  
-	constructor(){
-		this.scalar = 150; //scalar value of 150 
-	 	this.x = 7/this.scalar; //x value of 7/150 //speed of space between yellow lines  
-  	this.y = 300/this.scalar; //y value of 300/150 //
-	}
-
-  
- display(){ 
-    
-    fill(70,70,5);
-	 quad((-(this.x),this.y,0,this.y,0,1.5*this.y,-1.5*this.x,1.5*this.y)); //keeps far yellow lines in far perspective 
-    if(this.scalar<1){ //if the scalar is less than 1 
-      this.scalar=150; //set it back to 150 
-    }
-    this.scalar=this.scalar-0.14; //this instance of scalar -.14 
-  }
-}
-
-//RoadTrip
+//play library turned off for testing purposes 
 
 //Stripes kept from a fork of https://www.openprocessing.org/sketch/645434
 let stripes = [70]; //new array of stripe objects 
-var snowflakes = [];
-let flakes = 300; //limit of snowflakes 
-var xPos;
-var yPos;
-var c;
-var wh;
-var speedX;
-var speedY; 
+var snowflakes = [300]; //snowflake objects
+var cityLights = [100]; //city light objects 
+
 
 //var jeep; 
 
@@ -94,14 +23,23 @@ createCanvas(800,600);
       }
   
     for(var y = 0; y < flakes; y++){
-      xPos = random(0, width); //random x position
-      yPos = random(0, height); //random y position
-      speedy = random(0.5, 3);
-      speedX = random(0.02,0.5);
-      c = color(255, 255, 255, random(30, 200));
-      wh = random(3, 10); //random width/height 
+      var xPos = random(0, width); //random x position
+      var yPos = random(0, height); //random y position
+      var speedy = random(0.5, 3);
+      var speedX = random(0.02,0.5);
+      var c = color(255, 255, 255, random(30, 200));
+      var wh = random(3, 10); //random width/height 
       snowflakes.push(new Snow(xPos, yPos, speedX, speedY, wh, wh, c));
     }
+  
+    for(var h=0; h<cityLights.length; h++){
+       var  xPosi = random(0, width); //random x position
+       var  yPosi = random(0, height); //random y position
+       var  co = color(255, 255, 255, random(30, 200));
+       var  wih = random(3, 10); //random width/height 
+        cityLights.push(new Sparkle(xPosi, yPosi, wih, wih, co));
+    }
+  
 }
 
 
@@ -112,6 +50,7 @@ function draw() {
     background('#52B1FF'); //background color (for now) 
     fill('#C29D49'); //fill color (for now)
     rectMode(CORNER); //corner mode of rect
+    noStroke();
     rect(-width/2,0,width,height/2); //rect the size of the bottom half of the screen
     fill(0);
     quad(6,0,-5,0,-width/5,height/2,width/5+5,height/2); //rect for road 
@@ -127,25 +66,25 @@ function draw() {
       stripes[i].display(); //display that stripe 
        }
   
-  if (millis()>0 && millis()<11000){ //within timeframe
-      snow(); //winter scene
-  }
-  // if (millis()>11000 && millis()<49000){ //within timeframe
-  // mountain(); //mountain scene
-  // } 
-  // if (millis()>17000 && millis()<57000){  //within timeframe
+   if (millis()>10000 && millis()<20000){ //within timeframe
+   snow(); //winter scene
+   } 
+  
+  
+  // if (millis()>20000 && millis()<30000){  //within timeframe
+  // beach(); //waterfront scene
+  // }
+  // if (millis()>30000 && millis()<40000){  //within timeframe
   // desert(); //desert scene
   // }
-  // if (millis()>19000 && millis()<66000){  //within timeframe
+  // if (millis()>40000 && millis()<50000){  //within timeframe
   // city(); //city scene 
-  // }
-  // if (millis()>19000 && millis()<66000){  //within timeframe
-  // beach(); //beach scene 
   // }
   
     }
 
-
+//want to generate random snow 
+//want to add mountain range in background 
 function snow(){
   for(var i = 0; i < snowflakes.length; i++){
     snowflakes[i].move();
@@ -153,6 +92,49 @@ function snow(){
     snowflakes[i].makeMore();
   }
 }
+
+//want to make cactuses pass by and move further away 
+//maybe tumbleweed 
+function desert(){
+}
+
+
+//working in a fork of this sketch to test each scene individually 
+//want to make skyline with sparkling lights
+function city(){ 
+    fill('#1B1540'); //midnight blue for buildings 
+    noStroke(); //no stroke 
+    //buildings left to right 
+    //I attempted doing this in the form of a buildings class but it did not work very well 
+      quad(0, 300, 60, 300, 60, 100, 0, 100);
+    quad(60, 300, 120, 300, 120, 150, 60, 150);
+    quad(140, 300, 220, 300, 220, 40, 140, 40);
+    quad(175, 300, 185, 300, 185, 10, 175, 10);
+    quad(220, 300, 260, 300, 260, 50, 220, 50);
+    quad(260, 300, 320, 300, 320, 100, 260, 100);
+    quad(350, 300, 380, 300, 380, 5, 350, 5);
+    quad(385, 300, 430, 300, 430, 5, 385, 5);
+    quad(460, 300, 530, 300, 530, 150, 460, 150);
+    quad(530, 300, 560, 300, 560, 50, 530, 50);
+    quad(570, 300, 620, 300, 620, 140, 570, 140);
+    quad(640, 300, 680, 300, 680, 30, 640, 30);
+    quad(690, 300, 750, 300, 750, 100, 690, 100);
+    quad(750, 300, 800, 300, 800, 35, 750, 35);
+    fill('#352A80'); //lighter blue for front buildings 
+    quad(40, 300, 90, 300, 90, 50, 40, 50);
+    quad(110, 300, 140, 300, 140, 70, 110, 70);
+    quad(150, 300, 180, 300, 180, 80, 150, 80);
+    quad(190, 300, 250, 300, 250, 200, 190, 200);
+    quad(300, 300, 340, 300, 340, 70, 300, 70);
+    quad(315, 300, 325, 300, 325, 50, 315, 50);
+    quad(360, 300, 400, 300, 400, 170, 360, 170);
+    quad(410, 300, 500, 300, 500, 210, 410, 210);
+    quad(550, 300, 580, 300, 580, 30, 550, 30);
+    quad(600, 300, 640, 300, 640, 90, 600, 90);
+    quad(680, 300, 750, 300, 750, 140, 680, 140);
+}
+
+
 
     
 class Stripe {
@@ -175,31 +157,48 @@ class Stripe {
   }
 }
 
+
 class Snow{
   constuctor(x, y, sX, sY, w, h, c){
+    this.xPosi = x; //x position
+    this.yPosi = y; //y position
+    this.xSpeed = sX; //speed in x 
+    this.ySpeed = sY; //speed in y
+    this.width = w; //width
+    this.height = h; //height
+    this.col = c; //color 
+  }
+
+  move(){
+    this.xPosi += this.xSpeed; //add speed to posision in x dir
+    this.yPosi += this.ySpeed; //add speed to position in y dir
+  }
+
+  show(){
+    fill(this.col); //fill w color 
+    ellipse(this.xPosi, this.yPosi, this.width, this.height); //circle at this x, this, y, with size this with and this height
+  }
+
+  makeMore(){
+    if(this.yPosi > height){ //if the y position is > than height, start more from the top 
+      this.yPosi = 0;
+    }
+  }
+}
+
+class Sparkle{
+  
+  constuctor(x, y, w, h, c){
     this.xPosi = x;
     this.yPosi = y;
-    this.xSpeed = sX;
-    this.ySpeed = sY;
     this.width = w;
     this.height = h;
     this.col = c;
   }
 
-  move(){
-    this.xPosi += this.xSpeed;
-    this.yPosi += this.ySpeed;
-  }
-
   show(){
     fill(this.col);
-    ellipse(this.xPosi, this.yPosi, this.width, this.height);
+    //quad(this.xPosi, this.yPosi, this.width, this.height); Diamond shape 
   }
-
-  makeMore(){
-    if(this.yPosi > height){
-      this.yPosi = 0;
-    }
-  }
+  
 }
-    
