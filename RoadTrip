@@ -2,74 +2,58 @@
 //play library turned off for testing purposes 
 
 //Stripes kept from a fork of https://www.openprocessing.org/sketch/645434
-let stripes = [70]; //new array of stripe objects 
-var snowflakes = [300]; //snowflake objects
-var cityLights = [100]; //city light objects 
-
-
-//var jeep; 
+let stripes = []; //new array of stripe objects 
+var snowflakes = [];  
+var cityLights = []; 
+var jeep;  
+var mountains;
+var beachChair;
 
 function preload(){
-//  jeep = loadAnimation('jeep1.png','jeep12.png');
   
+  //jeep = createSprite(width/2, height/2, width/2, height/2);
+  //var car = jeep.addAnimation('rumble', Jeep001.png, Jeep009.png);
+  jeep = loadAnimation('Jeep001.png','Jeep009.png');
+  //mountains = loadImage('Mountains001.png');
+  //chair = loadImafe('beachChair001.png');
 }
 
 function setup() {
-createCanvas(800,600);
-  translate(width/2,height/2);
-  
+createCanvas(1400,800);
+translate(width/2,height/2);
+
      for(var i=0; i<stripes.length; i++){ //for each indice in stripes, create a new instance of that object 
     stripes[i]=new Stripe();
       }
   
-    for(var y = 0; y < flakes; y++){
-      var xPos = random(0, width); //random x position
-      var yPos = random(0, height); //random y position
-      var speedy = random(0.5, 3);
-      var speedX = random(0.02,0.5);
-      var c = color(255, 255, 255, random(30, 200));
-      var wh = random(3, 10); //random width/height 
+    for(var y = 0; y < 300; y++){
+      xPos = random(0, width); //random x position
+      yPos = random(0, height); //random y position
+      speedY = random(0.5, 3);
+      speedX = random(0.02,0.5);
+      c = color(255, 255, 255, random(30, 200));
+      wh = random(3, 10); //random width/height 
       snowflakes.push(new Snow(xPos, yPos, speedX, speedY, wh, wh, c));
     }
-  
-    for(var h=0; h<cityLights.length; h++){
-       var  xPosi = random(0, width); //random x position
-       var  yPosi = random(0, height); //random y position
-       var  co = color(255, 255, 255, random(30, 200));
-       var  wih = random(3, 10); //random width/height 
-        cityLights.push(new Sparkle(xPosi, yPosi, wih, wih, co));
-    }
-  
 }
 
 
 function draw() {
-  //  animation(jeep, width/2, height/2);
-    push();
-    translate(width/2,height/2); //middle of screen
-    background('#52B1FF'); //background color (for now) 
-    fill('#C29D49'); //fill color (for now)
-    rectMode(CORNER); //corner mode of rect
-    noStroke();
-    rect(-width/2,0,width,height/2); //rect the size of the bottom half of the screen
-    fill(0);
-    quad(6,0,-5,0,-width/5,height/2,width/5+5,height/2); //rect for road 
-    if(frameCount<1050){ //if framecount is less than 1050 
-       fill(70,70,5);
-    quad(-6,height/2,-1.7,height/2,0,0,-0.5,0); //left yellow line 
-    quad(6,height/2,1.7,height/2,0,0,0.5,0); //right yellow line 
-    pop();
-    }
+    
+  drawRoad();
+  drawCar();
+  snow();
   
-       for(var i=0; i<stripes.length; i++){ //for each indice in stripes 
-       if(frameCount>15*i)  //if framecount is greater than 15 times that indice
-      stripes[i].display(); //display that stripe 
-       }
+  //snow();
+  //city();
+  //if(jeep.position.y > height/1.9)
+    
+
+
   
-   if (millis()>10000 && millis()<20000){ //within timeframe
-   snow(); //winter scene
-   } 
-  
+  // if (millis()>10000 && millis()<20000){  //within timeframe
+  // snow(); //snowy mountain scene
+  // }
   
   // if (millis()>20000 && millis()<30000){  //within timeframe
   // beach(); //waterfront scene
@@ -77,15 +61,25 @@ function draw() {
   // if (millis()>30000 && millis()<40000){  //within timeframe
   // desert(); //desert scene
   // }
-  // if (millis()>40000 && millis()<50000){  //within timeframe
-  // city(); //city scene 
-  // }
+  if (millis()>40000 && millis()<50000){  //within timeframe
+    city(); //city scene 
+  }
   
     }
 
 //want to generate random snow 
-//want to add mountain range in background 
-function snow(){
+//want to add snowy mountain range in background (drawn)
+
+function beach(){
+  
+  image(chair, width/4,height/4);
+}
+
+
+function snow(){ //headlights will turn on in the snow
+  
+  //image(mountains, width/2, height/2);
+  
   for(var i = 0; i < snowflakes.length; i++){
     snowflakes[i].move();
     snowflakes[i].show();
@@ -93,20 +87,25 @@ function snow(){
   }
 }
 
-//want to make cactuses pass by and move further away 
-//maybe tumbleweed 
+
 function desert(){
+  
+  //want to make cactuses pass by and move further away (drawn)
+  //tumbleweed (drawn)
+  
 }
 
 
-//working in a fork of this sketch to test each scene individually 
-//want to make skyline with sparkling lights
-function city(){ 
-    fill('#1B1540'); //midnight blue for buildings 
+
+function city(){
+  push();
+  scale(1.5);
+  translate(50, -30);
+    fill('#1B1540'); //midnight blue for back buildings 
     noStroke(); //no stroke 
     //buildings left to right 
     //I attempted doing this in the form of a buildings class but it did not work very well 
-      quad(0, 300, 60, 300, 60, 100, 0, 100);
+    quad(0, 300, 60, 300, 60, 100, 0, 100);
     quad(60, 300, 120, 300, 120, 150, 60, 150);
     quad(140, 300, 220, 300, 220, 40, 140, 40);
     quad(175, 300, 185, 300, 185, 10, 175, 10);
@@ -132,6 +131,40 @@ function city(){
     quad(550, 300, 580, 300, 580, 30, 550, 30);
     quad(600, 300, 640, 300, 640, 90, 600, 90);
     quad(680, 300, 750, 300, 750, 140, 680, 140);
+  pop();
+}
+
+
+
+function drawRoad(){
+  push();
+    translate(width/2,height/2); //middle of screen
+    background('#52B1FF'); //background color (for now) 
+    fill('#C29D49'); //fill color (for now)
+    rectMode(CORNER); //corner mode of rect
+    noStroke();
+    rect(-width/2,0,width,height/2); //rect the size of the bottom half of the screen
+    fill(0);
+    quad(6,0,-5,0,-width,height/2,width,height/2); //rect for road 
+    if(frameCount<1050){ //if framecount is less than 1050 
+       fill(70,70,5);
+    quad(-60,height/2,-15,height/2,0,0,-0.5,0); //left yellow line 
+    quad(60,height/2,15,height/2,0,0,0.5,0); //right yellow line 
+    pop();  
+      
+     for(var i=0; i<stripes.length; i++){ //for each indice in stripes 
+       if(frameCount>15*i)  //if framecount is greater than 15 times that indice
+      stripes[i].display(); //display that stripe 
+       }
+  
+}
+
+}
+
+function drawCar(){ //no lights 
+    
+  animation(jeep, width/2, height/2);
+
 }
 
 
@@ -186,19 +219,5 @@ class Snow{
   }
 }
 
-class Sparkle{
-  
-  constuctor(x, y, w, h, c){
-    this.xPosi = x;
-    this.yPosi = y;
-    this.width = w;
-    this.height = h;
-    this.col = c;
-  }
 
-  show(){
-    fill(this.col);
-    //quad(this.xPosi, this.yPosi, this.width, this.height); Diamond shape 
-  }
-  
 }
