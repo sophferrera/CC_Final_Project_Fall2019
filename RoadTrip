@@ -1,165 +1,210 @@
 //RoadTrip
-//play library turned off for testing purposes 
+//the audio throughout will be a set playlist of songs that can be "tuned through" using the up and down arrow keys
+//between each song will be radio interference/tuning noises 
+//each scene will have its own ambient audio that will not be controlled by the user 
+//using a switch function, the user will be able to pick through the scenes they want to view while listening to the music they "tune" to 
 
-//Stripes kept from a fork of https://www.openprocessing.org/sketch/645434
-let stripes = []; //new array of stripe objects 
+
+//Stripe inspo kept from a fork of https://www.openprocessing.org/sketch/645434
 var snowflakes = [];  
-var cityLights = []; 
+var citylights;
 var jeep;  
 var mountains;
 var beachChair;
+var mount;
+var chair;
+var umbrella;
+var waves;
+var tall; 
 
 function preload(){
-  
-  //jeep = createSprite(width/2, height/2, width/2, height/2);
-  //var car = jeep.addAnimation('rumble', Jeep001.png, Jeep009.png);
-  jeep = loadAnimation('Jeep001.png','Jeep009.png');
-  //mountains = loadImage('Mountains001.png');
-  //chair = loadImafe('beachChair001.png');
+	
+	//jeep = createSprite(width/2, height/2, width/2, height/2);
+	//var car = jeep.addAnimation('rumble', Jeep001.png, Jeep009.png); //MAKE THIS A SPRITE 
+	jeep = loadAnimation('Jeep001.png','Jeep009.png');
+	mount = loadAnimation('Mountains001.png');
+	chair = loadAnimation('beachChair001.png');
+	umbrella = loadAnimation('umbrella.png');
+	citylights = loadAnimation('sparkle001.png', 'sparkle003.png');
+	//waves = loadAnimation('waves001.png', 'waves010.png'); //MAKE THESE 
 }
 
 function setup() {
 createCanvas(1400,800);
 translate(width/2,height/2);
-
-     for(var i=0; i<stripes.length; i++){ //for each indice in stripes, create a new instance of that object 
-    stripes[i]=new Stripe();
-      }
-  
-    for(var y = 0; y < 300; y++){
-      xPos = random(0, width); //random x position
-      yPos = random(0, height); //random y position
-      speedY = random(0.5, 3);
-      speedX = random(0.02,0.5);
-      c = color(255, 255, 255, random(30, 200));
-      wh = random(3, 10); //random width/height 
-      snowflakes.push(new Snow(xPos, yPos, speedX, speedY, wh, wh, c));
-    }
+	
+		for(var y = 0; y < 300; y++){
+			xPos = random(0, width); //random x position
+			yPos = random(0, height); //random y position
+			speedY = random(0.5, 3);
+			speedX = random(0.02,0.5);
+			c = color(255, 255, 255, random(30, 200));
+			wh = random(3, 10); //random width/height 
+			snowflakes.push(new Snow(xPos, yPos, speedX, speedY, wh, wh, c));
+		}
 }
 
 
 function draw() {
-    
-  drawRoad();
-  drawCar();
-  snow();
-  
-  //snow();
-  //city();
-  //if(jeep.position.y > height/1.9)
-    
+		
+	drawRoad();
+	drawCar();
+	//beach();	
+	//snow();
+  city();
+	//if(jeep.position.y > height/1.9) //MAKE JEEP BOUNCE
+		
+
+//MAKE A SWITCH STATEMENT 
+	
+	// if (millis()>10000 && millis()<20000){  //within timeframe
+	// snow(); //snowy mountain scene
+	// }
+	
+	// if (millis()>20000 && millis()<30000){  //within timeframe
+	// beach(); //waterfront scene
+	// }
+	// if (millis()>30000 && millis()<40000){  //within timeframe
+	// desert(); //space scene
+	// }
+	// if (millis()>40000 && millis()<50000){  //within timeframe
+	// 	city(); //city scene 
+	// }
+	
+		}
 
 
-  
-  // if (millis()>10000 && millis()<20000){  //within timeframe
-  // snow(); //snowy mountain scene
-  // }
-  
-  // if (millis()>20000 && millis()<30000){  //within timeframe
-  // beach(); //waterfront scene
-  // }
-  // if (millis()>30000 && millis()<40000){  //within timeframe
-  // desert(); //desert scene
-  // }
-  if (millis()>40000 && millis()<50000){  //within timeframe
-    city(); //city scene 
-  }
-  
-    }
+
+
+//I want to have one half of the road to have some beach chairs and an umbrella
+//I want the other half of the beach to have a rolling wave shoreline 
+//translucent clouds passing by 
+//wave sounds  
+function beach(){
+	
+	{push();
+	scale(.3);
+	animation(chair, 600, 1700);
+	pop();}
+	{push();
+	scale(.25);
+	animation(chair, 1300, 1800);
+	pop();}
+	{push();
+	scale(.5);
+	animation(umbrella, 350, 730);
+	pop();}
+	
+}
+
+
+
 
 //want to generate random snow 
-//want to add snowy mountain range in background (drawn)
+//want to add snowy mountain range in background (drawn) that rises as the car "drives away"
+//the animation will have its headlights on 
+// function snow(){ //headlights will turn on in the snow
+	
+// 	for(var i = 0; i < snowflakes.length; i++){
+// 		snowflakes[i].move();
+// 		snowflakes[i].show();
+// 		snowflakes[i].makeMore();
+// 	}
+	
+// 	drawMount();
+// }
 
-function beach(){
-  
-  image(chair, width/4,height/4);
+//I want to have the jeep in outer space roating and floating around 
+//it will be quiet
+//need to draw space background scene 
+function space(){
 }
 
 
-function snow(){ //headlights will turn on in the snow
-  
-  //image(mountains, width/2, height/2);
-  
-  for(var i = 0; i < snowflakes.length; i++){
-    snowflakes[i].move();
-    snowflakes[i].show();
-    snowflakes[i].makeMore();
-  }
-}
-
-
-function desert(){
-  
-  //want to make cactuses pass by and move further away (drawn)
-  //tumbleweed (drawn)
-  
-}
-
-
-
+//I want to add my sparkle animation so the buildings look like they're shining 
+//I want to add a beeping and honking sound effect behind whatever music is playing or being tuned at the time 
 function city(){
-  push();
-  scale(1.5);
-  translate(50, -30);
-    fill('#1B1540'); //midnight blue for back buildings 
-    noStroke(); //no stroke 
-    //buildings left to right 
-    //I attempted doing this in the form of a buildings class but it did not work very well 
-    quad(0, 300, 60, 300, 60, 100, 0, 100);
-    quad(60, 300, 120, 300, 120, 150, 60, 150);
-    quad(140, 300, 220, 300, 220, 40, 140, 40);
-    quad(175, 300, 185, 300, 185, 10, 175, 10);
-    quad(220, 300, 260, 300, 260, 50, 220, 50);
-    quad(260, 300, 320, 300, 320, 100, 260, 100);
-    quad(350, 300, 380, 300, 380, 5, 350, 5);
-    quad(385, 300, 430, 300, 430, 5, 385, 5);
-    quad(460, 300, 530, 300, 530, 150, 460, 150);
-    quad(530, 300, 560, 300, 560, 50, 530, 50);
-    quad(570, 300, 620, 300, 620, 140, 570, 140);
-    quad(640, 300, 680, 300, 680, 30, 640, 30);
-    quad(690, 300, 750, 300, 750, 100, 690, 100);
-    quad(750, 300, 800, 300, 800, 35, 750, 35);
-    fill('#352A80'); //lighter blue for front buildings 
-    quad(40, 300, 90, 300, 90, 50, 40, 50);
-    quad(110, 300, 140, 300, 140, 70, 110, 70);
-    quad(150, 300, 180, 300, 180, 80, 150, 80);
-    quad(190, 300, 250, 300, 250, 200, 190, 200);
-    quad(300, 300, 340, 300, 340, 70, 300, 70);
-    quad(315, 300, 325, 300, 325, 50, 315, 50);
-    quad(360, 300, 400, 300, 400, 170, 360, 170);
-    quad(410, 300, 500, 300, 500, 210, 410, 210);
-    quad(550, 300, 580, 300, 580, 30, 550, 30);
-    quad(600, 300, 640, 300, 640, 90, 600, 90);
-    quad(680, 300, 750, 300, 750, 140, 680, 140);
-  pop();
+	push();
+	scale(1.5);
+	translate(50, -30);
+		fill('#1B1540'); //midnight blue for back buildings 
+		noStroke(); //no stroke 
+		//buildings left to right 
+		//I attempted doing this in the form of a buildings class but it did not work very well 
+		quad(0, 300, 60, 300, 60, 100, 0, 100);
+		quad(60, 300, 120, 300, 120, 150, 60, 150);
+		quad(140, 300, 220, 300, 220, 40, 140, 40);
+		quad(175, 300, 185, 300, 185, 10, 175, 10);
+		quad(220, 300, 260, 300, 260, 50, 220, 50);
+		quad(260, 300, 320, 300, 320, 100, 260, 100);
+		quad(350, 300, 380, 300, 380, 5, 350, 5);
+		quad(385, 300, 430, 300, 430, 5, 385, 5);
+		quad(460, 300, 530, 300, 530, 150, 460, 150);
+		quad(530, 300, 560, 300, 560, 50, 530, 50);
+		quad(570, 300, 620, 300, 620, 140, 570, 140);
+		quad(640, 300, 680, 300, 680, 30, 640, 30);
+		quad(690, 300, 750, 300, 750, 100, 690, 100);
+		quad(750, 300, 800, 300, 800, 35, 750, 35);
+		fill('#352A80'); //lighter blue for front buildings 
+		quad(40, 300, 90, 300, 90, 50, 40, 50);
+		quad(110, 300, 140, 300, 140, 70, 110, 70);
+		quad(150, 300, 180, 300, 180, 80, 150, 80);
+		quad(190, 300, 250, 300, 250, 200, 190, 200);
+		quad(300, 300, 340, 300, 340, 70, 300, 70);
+		quad(315, 300, 325, 300, 325, 50, 315, 50);
+		quad(360, 300, 400, 300, 400, 170, 360, 170);
+		quad(410, 300, 500, 300, 500, 210, 410, 210);
+		quad(550, 300, 580, 300, 580, 30, 550, 30);
+		quad(600, 300, 640, 300, 640, 90, 600, 90);
+		quad(680, 300, 750, 300, 750, 140, 680, 140);
+	pop();
+	
+	push();
+	scale(0.7);
+	animation(citylights, width/1.7, height/1.3); //this doesn't look very nice so I'm gonna fix that 
+	pop();
+
+	
 }
 
 
-
+//I think I need to make this a class so that the sky and ground colors can change 
 function drawRoad(){
-  push();
+	
+		push();
     translate(width/2,height/2); //middle of screen
     background('#52B1FF'); //background color (for now) 
-    fill('#C29D49'); //fill color (for now)
+    fill('#C2B37D'); //fill color (for now)
     rectMode(CORNER); //corner mode of rect
-    noStroke();
+		noStroke();
     rect(-width/2,0,width,height/2); //rect the size of the bottom half of the screen
-    fill(0);
-    quad(6,0,-5,0,-width,height/2,width,height/2); //rect for road 
-    if(frameCount<1050){ //if framecount is less than 1050 
-       fill(70,70,5);
+    fill(0); //road color
+    quad(6,0,-5,0,-width/2,height/2,width/2,height/2); //rect for road 
+		fill('#BFBA2E');
     quad(-60,height/2,-15,height/2,0,0,-0.5,0); //left yellow line 
     quad(60,height/2,15,height/2,0,0,0.5,0); //right yellow line 
-    pop();  
-      
-     for(var i=0; i<stripes.length; i++){ //for each indice in stripes 
-       if(frameCount>15*i)  //if framecount is greater than 15 times that indice
-      stripes[i].display(); //display that stripe 
-       }
-  
+		pop();	
+
+	
+	
 }
 
+function drawCar(){ //no lights on 
+		
+	animation(jeep, width/2, height/2);
+
 }
+
+function drawMount(){ //need to fix since it's in front of the jeep, make it rise up 
+	scale(0.5);
+	tall = 660;
+//	for (var y = 0; y < tall; y+= .1){
+	scale(0.5);
+	animation(mount, 1500, y);
+	//}
+}
+
+
 
 function drawCar(){ //no lights 
     
@@ -170,13 +215,7 @@ function drawCar(){ //no lights
 
 
     
-class Stripe {
-  
-  constructor(){
-    this.scalar = 150; //scalar value of 150 
-    this.x = 7/this.scalar; //x value of 7/150 //speed of space between yellow lines  
-    this.y = 300/this.scalar; //y value of 300/150 //
-  }
+
 
   
  display(){ 
