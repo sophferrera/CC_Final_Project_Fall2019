@@ -9,23 +9,57 @@
 var snowflakes = [];  
 var citylights;
 var jeep;  
+var jeepLights;
 var mountains;
 var beachChair;
 var mount;
 var chair;
 var umbrella;
 var waves;
+var space;
 var tall; 
+var wavesound;
+var trafficsound;
+var tunersound;
+var walkinhere;
+var carey;
+var checkyes;
+var complicated;
+var fivehundred;
+var home;
+var houdini;
+var neverreallyover;
+var ny;
+var truelove;
+var wait;
 
 function preload(){
 	
 	//jeep = createSprite(width/2, height/2, width/2, height/2);
 	//var car = jeep.addAnimation('rumble', Jeep001.png, Jeep009.png); //MAKE THIS A SPRITE 
 	jeep = loadAnimation('Jeep001.png','Jeep009.png');
+	jeepLights = loadAnimation ('JeepLights001.png' , 'JeepLights009.png');
 	mount = loadAnimation('Mountains001.png');
 	chair = loadAnimation('beachChair001.png');
 	umbrella = loadAnimation('umbrella.png');
 	citylights = loadAnimation('sparkle001.png', 'sparkle003.png');
+	space = loadAnimation('space001.png','space010.png');
+	wavesound = loadSound('wavecrash001.mp3');
+	trafficsound = loadSound('traffic001.mp3');
+	tunersound = loadSound('tuner001.mp3'); 
+	//walkinhere = loadSound('walkin001.mp3');
+	carey = loadSound('carey001.mp3');
+	checkyes = loadSound('checkyes001.mp3');
+	complicated = loadSound('complicated001.mp3');
+	fivehundred = loadSound('fivehundred001.mp3');
+	home = loadSound('home001.mp3')
+	houdini = loadSound('houdini001.mp3');
+	neverreallyover = loadSound('neverreallyover001.mp3');
+	ny = loadSound('ny001.mp3');
+	truelove = loadSound('truelove001.mp3');
+	wait = loadSound('wait001.mp3');
+	
+	
 	//waves = loadAnimation('waves001.png', 'waves010.png'); //MAKE THESE 
 }
 
@@ -33,7 +67,7 @@ function setup() {
 createCanvas(1400,800);
 translate(width/2,height/2);
 	
-		for(var y = 0; y < 300; y++){
+		for(var y = 0; y < 500; y++){ //less than 500 snowflakes 
 			xPos = random(0, width); //random x position
 			yPos = random(0, height); //random y position
 			speedY = random(0.5, 3);
@@ -47,11 +81,15 @@ translate(width/2,height/2);
 
 function draw() {
 		
-	drawRoad();
-	drawCar();
-	//beach();	
-	//snow();
-  city();
+	//drawSpace();
+	//drawRoad();
+	
+	 //drawCar();
+	//beach();	//works, add wave drawings and passing clouds 
+	//snow();		//works, fix mountain situation and make it move
+  //city();		//all in, fix the order in which they're showing (maybe with switch statement) 
+	//drawSpace();  //works/ make jeep float around  
+	
 	//if(jeep.position.y > height/1.9) //MAKE JEEP BOUNCE
 		
 
@@ -82,6 +120,7 @@ function draw() {
 //wave sounds  
 function beach(){
 	
+	drawCar();  
 	{push();
 	scale(.3);
 	animation(chair, 600, 1700);
@@ -95,6 +134,7 @@ function beach(){
 	animation(umbrella, 350, 730);
 	pop();}
 	
+	
 }
 
 
@@ -103,27 +143,37 @@ function beach(){
 //want to generate random snow 
 //want to add snowy mountain range in background (drawn) that rises as the car "drives away"
 //the animation will have its headlights on 
-// function snow(){ //headlights will turn on in the snow
+function snow(){ //headlights will turn on in the snow
 	
-// 	for(var i = 0; i < snowflakes.length; i++){
-// 		snowflakes[i].move();
-// 		snowflakes[i].show();
-// 		snowflakes[i].makeMore();
-// 	}
+	drawWinterRoad();
+	drawMount();
+	animation(jeepLights, width/2, height/2);
 	
-// 	drawMount();
-// }
+	for(var i = 0; i < snowflakes.length; i++){
+		snowflakes[i].move();
+		snowflakes[i].show();
+		snowflakes[i].makeMore();
+	}
+	
+	
+}
+
 
 //I want to have the jeep in outer space roating and floating around 
-//it will be quiet
-//need to draw space background scene 
-function space(){
+function drawSpace(){
+	//add the drawCarLights(); function
+	push();
+	scale(0.4);
+	animation(space, 1800, 1000); //space background
+	pop();
+	animation(jeepLights, width/2, height/2); //jeep with lights on 
 }
 
 
 //I want to add my sparkle animation so the buildings look like they're shining 
 //I want to add a beeping and honking sound effect behind whatever music is playing or being tuned at the time 
-function city(){
+function city(){ //I wanna draw this myself cuz its flippin ugly 
+	drawCar(); //draw car 
 	push();
 	scale(1.5);
 	translate(50, -30);
@@ -169,6 +219,27 @@ function city(){
 
 
 //I think I need to make this a class so that the sky and ground colors can change 
+function drawWinterRoad(){
+	
+		push();
+    translate(width/2,height/2); //middle of screen
+	  background('#BFBEBB'); //background color (for now) 
+	  fill('#E6E4E1'); //fill color (for now)
+    rectMode(CORNER); //corner mode of rect
+		noStroke();
+    rect(-width/2,0,width,height/2); //rect the size of the bottom half of the screen
+    fill(0); //road color
+    quad(6,0,-5,0,-width/2,height/2,width/2,height/2); //rect for road 
+		fill('#BFBA2E');
+    quad(-60,height/2,-15,height/2,0,0,-0.5,0); //left yellow line 
+    quad(60,height/2,15,height/2,0,0,0.5,0); //right yellow line 
+		pop();	
+
+	
+	
+}
+
+
 function drawRoad(){
 	
 		push();
@@ -189,74 +260,33 @@ function drawRoad(){
 	
 }
 
+
 function drawCar(){ //no lights on 
 		
 	animation(jeep, width/2, height/2);
 
 }
 
+function drawCarLights(){
+	
+}
+
 function drawMount(){ //need to fix since it's in front of the jeep, make it rise up 
-	scale(0.5);
-	tall = 660;
-//	for (var y = 0; y < tall; y+= .1){
-	scale(0.5);
-	animation(mount, 1500, y);
+	//background(0);
+	push();
+	scale(0.45);
+	//y = 10;
+	// for (var y = 0; y < tall; y+= .1){
+	//  scale(0.5); still trying to get it to rise up 
+	 animation(mount, 1460, 800);
 	//}
+	pop();
 }
 
-
-
-function drawCar(){ //no lights 
-    
-  animation(jeep, width/2, height/2);
-
+function tuneRadio(){
+	
+	//add in all of the audio tracks with the static in between each 
+	//use up and down arrow keys to change between "stations" 
+	
 }
 
-
-
-    
-
-
-  
- display(){ 
-    
-    fill(70,70,5);
-   quad((-(this.x),this.y,0,this.y,0,1.5*this.y,-1.5*this.x,1.5*this.y)); //keeps far yellow lines in far perspective 
-    if(this.scalar<1){ //if the scalar is less than 1 
-      this.scalar=150; //set it back to 150 
-    }
-    this.scalar=this.scalar-0.14; //this instance of scalar -.14 
-  }
-}
-
-
-class Snow{
-  constuctor(x, y, sX, sY, w, h, c){
-    this.xPosi = x; //x position
-    this.yPosi = y; //y position
-    this.xSpeed = sX; //speed in x 
-    this.ySpeed = sY; //speed in y
-    this.width = w; //width
-    this.height = h; //height
-    this.col = c; //color 
-  }
-
-  move(){
-    this.xPosi += this.xSpeed; //add speed to posision in x dir
-    this.yPosi += this.ySpeed; //add speed to position in y dir
-  }
-
-  show(){
-    fill(this.col); //fill w color 
-    ellipse(this.xPosi, this.yPosi, this.width, this.height); //circle at this x, this, y, with size this with and this height
-  }
-
-  makeMore(){
-    if(this.yPosi > height){ //if the y position is > than height, start more from the top 
-      this.yPosi = 0;
-    }
-  }
-}
-
-
-}
