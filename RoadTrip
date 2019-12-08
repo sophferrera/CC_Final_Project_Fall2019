@@ -20,6 +20,8 @@ var space;
 var tall; 
 var wavesound;
 var trafficsound;
+var buildings;
+var clouds;
 var tunersound;
 var walkinhere;
 var carey;
@@ -32,10 +34,11 @@ var neverreallyover;
 var ny;
 var truelove;
 var wait;
+var tuneNum;
 
 function preload(){
 	
-	//jeep = createSprite(width/2, height/2, width/2, height/2);
+	//jeep = createSprite(width/2, height/2, , );
 	//var car = jeep.addAnimation('rumble', Jeep001.png, Jeep009.png); //MAKE THIS A SPRITE 
 	jeep = loadAnimation('Jeep001.png','Jeep009.png');
 	jeepLights = loadAnimation ('JeepLights001.png' , 'JeepLights009.png');
@@ -44,10 +47,12 @@ function preload(){
 	umbrella = loadAnimation('umbrella.png');
 	citylights = loadAnimation('sparkle001.png', 'sparkle003.png');
 	space = loadAnimation('space001.png','space010.png');
+	clouds = loadAnimation('clouds001.png');
+	buildings = loadAnimation('buildings001.png');
 	wavesound = loadSound('wavecrash001.mp3');
 	trafficsound = loadSound('traffic001.mp3');
 	tunersound = loadSound('tuner001.mp3'); 
-	//walkinhere = loadSound('walkin001.mp3');
+	walkinhere = loadSound('walkin001.mp3');
 	carey = loadSound('carey001.mp3');
 	checkyes = loadSound('checkyes001.mp3');
 	complicated = loadSound('complicated001.mp3');
@@ -80,18 +85,15 @@ translate(width/2,height/2);
 
 
 function draw() {
-		
-	//drawSpace();
-	//drawRoad();
+	
+	//tuneRadio();
 	
 	 //drawCar();
-	//beach();	//works, add wave drawings and passing clouds 
-	//snow();		//works, fix mountain situation and make it move
+				beach();	//works, add wave drawings and passing clouds 
+				//snow();		//works, fix mountain situation and make it move
   //city();		//all in, fix the order in which they're showing (maybe with switch statement) 
-	//drawSpace();  //works/ make jeep float around  
-	
-	//if(jeep.position.y > height/1.9) //MAKE JEEP BOUNCE
-		
+				//drawSpace();  //works/ make jeep float around  
+			
 
 //MAKE A SWITCH STATEMENT 
 	
@@ -120,19 +122,13 @@ function draw() {
 //wave sounds  
 function beach(){
 	
+	drawRoad();
 	drawCar();  
-	{push();
-	scale(.3);
-	animation(chair, 600, 1700);
-	pop();}
-	{push();
-	scale(.25);
-	animation(chair, 1300, 1800);
-	pop();}
-	{push();
-	scale(.5);
-	animation(umbrella, 350, 730);
-	pop();}
+	drawClouds();
+	drawChairs();
+	wavesound.setVolume(.5);
+	wavesound.playMode('untilDone'); //make this a little quieter
+	wavesound.play();
 	
 	
 }
@@ -173,48 +169,23 @@ function drawSpace(){
 //I want to add my sparkle animation so the buildings look like they're shining 
 //I want to add a beeping and honking sound effect behind whatever music is playing or being tuned at the time 
 function city(){ //I wanna draw this myself cuz its flippin ugly 
-	drawCar(); //draw car 
+		
+	drawRoad();
 	push();
-	scale(1.5);
-	translate(50, -30);
-		fill('#1B1540'); //midnight blue for back buildings 
-		noStroke(); //no stroke 
-		//buildings left to right 
-		//I attempted doing this in the form of a buildings class but it did not work very well 
-		quad(0, 300, 60, 300, 60, 100, 0, 100);
-		quad(60, 300, 120, 300, 120, 150, 60, 150);
-		quad(140, 300, 220, 300, 220, 40, 140, 40);
-		quad(175, 300, 185, 300, 185, 10, 175, 10);
-		quad(220, 300, 260, 300, 260, 50, 220, 50);
-		quad(260, 300, 320, 300, 320, 100, 260, 100);
-		quad(350, 300, 380, 300, 380, 5, 350, 5);
-		quad(385, 300, 430, 300, 430, 5, 385, 5);
-		quad(460, 300, 530, 300, 530, 150, 460, 150);
-		quad(530, 300, 560, 300, 560, 50, 530, 50);
-		quad(570, 300, 620, 300, 620, 140, 570, 140);
-		quad(640, 300, 680, 300, 680, 30, 640, 30);
-		quad(690, 300, 750, 300, 750, 100, 690, 100);
-		quad(750, 300, 800, 300, 800, 35, 750, 35);
-		fill('#352A80'); //lighter blue for front buildings 
-		quad(40, 300, 90, 300, 90, 50, 40, 50);
-		quad(110, 300, 140, 300, 140, 70, 110, 70);
-		quad(150, 300, 180, 300, 180, 80, 150, 80);
-		quad(190, 300, 250, 300, 250, 200, 190, 200);
-		quad(300, 300, 340, 300, 340, 70, 300, 70);
-		quad(315, 300, 325, 300, 325, 50, 315, 50);
-		quad(360, 300, 400, 300, 400, 170, 360, 170);
-		quad(410, 300, 500, 300, 500, 210, 410, 210);
-		quad(550, 300, 580, 300, 580, 30, 550, 30);
-		quad(600, 300, 640, 300, 640, 90, 600, 90);
-		quad(680, 300, 750, 300, 750, 140, 680, 140);
+	scale(1.75);
+	animation(buildings, 400, height/6);
 	pop();
+	animation(jeep, width/2, height/2);
 	
 	push();
 	scale(0.7);
 	animation(citylights, width/1.7, height/1.3); //this doesn't look very nice so I'm gonna fix that 
 	pop();
-
 	
+	walkinhere.playMode('untilDone');
+	walkinhere.play();
+	trafficsound.playMode('untilDone');
+	trafficsound.play();
 }
 
 
@@ -228,15 +199,12 @@ function drawWinterRoad(){
     rectMode(CORNER); //corner mode of rect
 		noStroke();
     rect(-width/2,0,width,height/2); //rect the size of the bottom half of the screen
-    fill(0); //road color
+    fill('#807E7D'); //road color
     quad(6,0,-5,0,-width/2,height/2,width/2,height/2); //rect for road 
 		fill('#BFBA2E');
     quad(-60,height/2,-15,height/2,0,0,-0.5,0); //left yellow line 
     quad(60,height/2,15,height/2,0,0,0.5,0); //right yellow line 
 		pop();	
-
-	
-	
 }
 
 
@@ -260,15 +228,37 @@ function drawRoad(){
 	
 }
 
+function drawClouds(){ //make this a sprite, just wanted to get it in 
+	
+	push();
+	scale(0.3);
+	animation(clouds, 2500, 1000);
+	pop();
+	
+}
+
+function drawChairs(){
+
+	{push();
+	scale(.3);
+	animation(chair, 600, 1700); //chair 1
+	pop();}
+	{push();
+	scale(.25);
+	animation(chair, 1300, 1800); //chair 2 
+	pop();}
+	{push();
+	scale(.5);
+	animation(umbrella, 350, 730); //umbrella 
+	pop();}
+	
+}
+
 
 function drawCar(){ //no lights on 
 		
-	animation(jeep, width/2, height/2);
+	animation(jeep, width/2, height/2); //jeep 
 
-}
-
-function drawCarLights(){
-	
 }
 
 function drawMount(){ //need to fix since it's in front of the jeep, make it rise up 
@@ -285,8 +275,92 @@ function drawMount(){ //need to fix since it's in front of the jeep, make it ris
 
 function tuneRadio(){
 	
+//	tuneNum = 0;
+// 	if (keyCode === RIGHT_ARROW){
+// 		tuneNum += 1;
+// 	}
+// 		if(keyCode === LEFT_ARROW){
+// 		tuneNum -= 1; 
+// 		}
+// 		if(tuneNum > 19){
+// 			tuneNum = 0;
+// 		}
+// 		if(tuneNum < 0){
+			
+// 		}
+// 	}
+	
+// 	switch(tuneNum){
+			
+// 			case(tuneNum = 0):
+// 				tunersound.play();
+// 				break;
+// 			case(tuneNum = 1):
+// 				truelove.play();
+// 				break;
+// 			case(tuneNum = 2):
+// 				tunersound.play();
+// 				break;
+// 			case(tuneNum = 3):
+// 				carey.play();
+// 				break;
+// 			case(tuneNum = 4):
+// 				tunersound.play();
+// 				break;
+// 			case(tuneNum = 5):
+// 				checkyes.play();
+// 				break;
+// 			case(tuneNum = 6):
+// 				tunersound.play();
+// 				break;	
+// 			case(tuneNum = 7):
+// 				complicated.play();
+// 				break;
+// 			case(tuneNum = 8):
+// 				tunersound.play();
+// 				break;	
+// 			case(tuneNum = 9):
+// 				fivehundred.play();
+// 				break;
+// 			case(tuneNum = 10):
+// 				tunersound.play();
+// 				break;
+// 			case(tuneNum = 11):
+// 				home.play();
+// 				break;
+// 			case(tuneNum = 12):
+// 				tunersound.play();
+// 				break;
+// 			case(tuneNum = 13):
+// 				houdini.play();
+// 				break;
+// 			case(tuneNum = 14):
+// 				tunersound.play();
+// 				break;
+// 			case(tuneNum = 15):
+// 				neverreallyover.play();
+// 				break;
+// 			case(tuneNum = 16):
+// 				tunersound.play();
+// 				break;
+// 			case(tuneNum = 17):
+// 				ny.play();
+// 				break;
+// 			case(tuneNum = 18):
+// 				tunersound.play();
+// 				break;
+// 			case(tuneNum = 19):
+// 				wait.play();
+// 				break;
+			
+// 	}
+	
+}
+	// truelove.playMode('untilDone');
+	// truelove.play();
+	
 	//add in all of the audio tracks with the static in between each 
 	//use up and down arrow keys to change between "stations" 
 	
-}
+
 
