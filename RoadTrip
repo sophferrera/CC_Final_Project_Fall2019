@@ -5,23 +5,25 @@
 //using a switch function, the user will be able to pick through the scenes they want to view while listening to the music they "tune" to 
 
 
+//CUT TUNER SOUND
+//MAKE RADIO GO BACK TO 1 
+//MAKE A DIFFERENT BACKGROUND FOR CITY SCENE 
+
 //Stripe inspo kept from a fork of https://www.openprocessing.org/sketch/645434
-var snowflakes = [];  
-var citylights;
-var jeep;  
-var jeepLights;
-var mountains;
-var beachChair;
-var mount;
-var chair;
-var umbrella;
-var waves;
-var space;
+var snowflakes = [];  //random snowflakes 
+var citylights; //city light animation
+var jeep;  //jeep animation
+var jeepLights; //jeep with lights animation
+var mountains; //mountain animation
+var chair; //chair animation
+var umbrella; //umbrella animation
+var waves; //wave animation
+var space; //space background
+var buildings; //building background
+var clouds; //cloud animation
 var tall; 
-var wavesound;
+var wavesound; 
 var trafficsound;
-var buildings;
-var clouds;
 var tunersound;
 var walkinhere;
 var carey;
@@ -35,6 +37,10 @@ var ny;
 var truelove;
 var wait;
 var tuneNum;
+var clicks = 0;
+var max = 20;
+var min = 1; 
+var songCount = 0;
 
 function preload(){
 	
@@ -48,6 +54,7 @@ function preload(){
 	citylights = loadAnimation('sparkle001.png', 'sparkle003.png');
 	space = loadAnimation('space001.png','space010.png');
 	clouds = loadAnimation('clouds001.png');
+	waves = loadAnimation('wave001.png', 'wave006.png');
 	buildings = loadAnimation('buildings001.png');
 	wavesound = loadSound('wavecrash001.mp3');
 	trafficsound = loadSound('traffic001.mp3');
@@ -65,7 +72,6 @@ function preload(){
 	wait = loadSound('wait001.mp3');
 	
 	
-	//waves = loadAnimation('waves001.png', 'waves010.png'); //MAKE THESE 
 }
 
 function setup() {
@@ -75,9 +81,9 @@ translate(width/2,height/2);
 		for(var y = 0; y < 500; y++){ //less than 500 snowflakes 
 			xPos = random(0, width); //random x position
 			yPos = random(0, height); //random y position
-			speedY = random(0.5, 3);
-			speedX = random(0.02,0.5);
-			c = color(255, 255, 255, random(30, 200));
+			speedY = random(0.5, 3); //speed in y direction
+			speedX = random(0.02,0.5); //speed in x direction
+			c = color(255, 255, 255, random(30, 200)); //varying opacity of whites
 			wh = random(3, 10); //random width/height 
 			snowflakes.push(new Snow(xPos, yPos, speedX, speedY, wh, wh, c));
 		}
@@ -86,33 +92,164 @@ translate(width/2,height/2);
 
 function draw() {
 	
-	//tuneRadio();
-	
-	 //drawCar();
-				beach();	//works, add wave drawings and passing clouds 
-				//snow();		//works, fix mountain situation and make it move
-  //city();		//all in, fix the order in which they're showing (maybe with switch statement) 
-				//drawSpace();  //works/ make jeep float around  
-			
+	//frameRate(30); MAYBE
 
-//MAKE A SWITCH STATEMENT 
+	 switch(clicks){
+        case 1:
+			 			background(0);
+            snow();
+            break;
+        case 2:
+			 			background(0);
+            beach();
+            break;
+        case 3:
+            wavesound.stop();
+						background(0);
+						city();
+            break;
+				case 4:
+						walkinhere.stop();
+						trafficsound.stop();
+						background(0);
+						drawSpace();
+						break;
 	
-	// if (millis()>10000 && millis()<20000){  //within timeframe
-	// snow(); //snowy mountain scene
-	// }
+			}
 	
-	// if (millis()>20000 && millis()<30000){  //within timeframe
-	// beach(); //waterfront scene
-	// }
-	// if (millis()>30000 && millis()<40000){  //within timeframe
-	// desert(); //space scene
-	// }
-	// if (millis()>40000 && millis()<50000){  //within timeframe
-	// 	city(); //city scene 
-	// }
-	
+	 	switch(songCount){
+			
+			case 1:
+				wait.stop();
+				tunersound.playMode('untilDone');
+				tunersound.play();
+				break;
+			case 2:
+				tunersound.stop();
+				truelove.playMode('untilDone');
+				truelove.play();
+				break;
+			case 3:
+				truelove.stop();
+				tunersound.playMode('untilDone');
+				tunersound.play();
+				break;
+			case 4:
+				tunersound.stop();
+				carey.playMode('untilDone');
+				carey.play();
+				break;
+			case 5:
+				carey.stop();
+				tunersound.playMode('untilDone');
+				tunersound.play();
+				break;
+			case 6:
+				tunersound.stop();
+				checkyes.playMode('untilDone');
+				checkyes.play();
+				break;
+			case 7:
+				checkyes.stop();
+				tunersound.playMode('untilDone');
+				tunersound.play();
+				break;	
+			case 8:
+				tunersound.stop();
+				complicated.playMode('untilDone');
+				complicated.play();
+				break;
+			case 9:
+				complicated.stop();
+				tunersound.playMode('untilDone');
+				tunersound.play();
+				break;	
+			case 10:
+				tunersound.stop();
+				fivehundred.playMode('untilDone');
+				fivehundred.play();
+				break;
+			case 11:
+				fivehundred.stop();
+				tunersound.playMode('untilDone');
+				tunersound.play();
+				break;
+			case 12:
+				tunersound.stop();
+				home.playMode('untilDone');
+				home.play();
+				break;
+			case 13:
+				home.stop();
+				tunersound.playMode('untilDone');
+				tunersound.play();
+				break;
+			case 14:
+				tunersound.stop();
+				houdini.playMode('untilDone');
+				houdini.play();
+				break;
+			case 15:
+				houdini.stop();
+				tunersound.playMode('untilDone');
+				tunersound.play();
+				break;
+			case 16:
+				tunersound.stop();
+				neverreallyover.playMode('untilDone');
+				neverreallyover.play();
+				break;
+			case 17:
+				neverreallyover.stop();
+				tunersound.playMode('untilDone');
+				tunersound.play();
+				break;
+			case 18:
+				tunersound.stop();
+				ny.playMode('untilDone');
+				ny.play();
+				break;
+			case 19:
+				ny.stop();
+				tunersound.playMode('untilDone');
+				tunersound.play();
+				break;
+			case 20:
+				tunersound.stop();
+				wait.playMode('untilDone');
+				wait.play();
+				break;
+			
+	}
+
 		}
 
+function mouseClicked(){
+		
+		clicks +=1;
+		if(clicks == 5){
+			clicks = 1;
+		}
+		
+	}
+
+function keyPressed(){
+	
+
+		if (keyCode === RIGHT_ARROW){
+			songCount += 1;
+		}
+		if(keyCode === LEFT_ARROW){
+		songCount -= 1; 
+		}
+		if(songCount > max){
+			songCount = 1;
+		}
+		if(songCount < min){
+			songCount = 20;
+		}
+	
+}
 
 
 
@@ -126,6 +263,7 @@ function beach(){
 	drawCar();  
 	drawClouds();
 	drawChairs();
+	drawWaves();
 	wavesound.setVolume(.5);
 	wavesound.playMode('untilDone'); //make this a little quieter
 	wavesound.play();
@@ -170,7 +308,7 @@ function drawSpace(){
 //I want to add a beeping and honking sound effect behind whatever music is playing or being tuned at the time 
 function city(){ //I wanna draw this myself cuz its flippin ugly 
 		
-	drawRoad();
+	drawRoad(); 
 	push();
 	scale(1.75);
 	animation(buildings, 400, height/6);
@@ -254,6 +392,12 @@ function drawChairs(){
 	
 }
 
+function drawWaves(){
+	
+	animation(waves, width/4, height/2);
+	
+}
+
 
 function drawCar(){ //no lights on 
 		
@@ -273,94 +417,9 @@ function drawMount(){ //need to fix since it's in front of the jeep, make it ris
 	pop();
 }
 
-function tuneRadio(){
+
 	
-//	tuneNum = 0;
-// 	if (keyCode === RIGHT_ARROW){
-// 		tuneNum += 1;
-// 	}
-// 		if(keyCode === LEFT_ARROW){
-// 		tuneNum -= 1; 
-// 		}
-// 		if(tuneNum > 19){
-// 			tuneNum = 0;
-// 		}
-// 		if(tuneNum < 0){
-			
-// 		}
-// 	}
 	
-// 	switch(tuneNum){
-			
-// 			case(tuneNum = 0):
-// 				tunersound.play();
-// 				break;
-// 			case(tuneNum = 1):
-// 				truelove.play();
-// 				break;
-// 			case(tuneNum = 2):
-// 				tunersound.play();
-// 				break;
-// 			case(tuneNum = 3):
-// 				carey.play();
-// 				break;
-// 			case(tuneNum = 4):
-// 				tunersound.play();
-// 				break;
-// 			case(tuneNum = 5):
-// 				checkyes.play();
-// 				break;
-// 			case(tuneNum = 6):
-// 				tunersound.play();
-// 				break;	
-// 			case(tuneNum = 7):
-// 				complicated.play();
-// 				break;
-// 			case(tuneNum = 8):
-// 				tunersound.play();
-// 				break;	
-// 			case(tuneNum = 9):
-// 				fivehundred.play();
-// 				break;
-// 			case(tuneNum = 10):
-// 				tunersound.play();
-// 				break;
-// 			case(tuneNum = 11):
-// 				home.play();
-// 				break;
-// 			case(tuneNum = 12):
-// 				tunersound.play();
-// 				break;
-// 			case(tuneNum = 13):
-// 				houdini.play();
-// 				break;
-// 			case(tuneNum = 14):
-// 				tunersound.play();
-// 				break;
-// 			case(tuneNum = 15):
-// 				neverreallyover.play();
-// 				break;
-// 			case(tuneNum = 16):
-// 				tunersound.play();
-// 				break;
-// 			case(tuneNum = 17):
-// 				ny.play();
-// 				break;
-// 			case(tuneNum = 18):
-// 				tunersound.play();
-// 				break;
-// 			case(tuneNum = 19):
-// 				wait.play();
-// 				break;
-			
-// 	}
-	
-}
-	// truelove.playMode('untilDone');
-	// truelove.play();
-	
-	//add in all of the audio tracks with the static in between each 
-	//use up and down arrow keys to change between "stations" 
 	
 
 
