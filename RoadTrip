@@ -5,15 +5,15 @@
 //using a switch function, the user will be able to pick through the scenes they want to view while listening to the music they "tune" to 
 
 
-//CUT TUNER SOUND
 //MAKE RADIO GO BACK TO 1 
-//MAKE A DIFFERENT BACKGROUND FOR CITY SCENE 
+//make mountain rise 
 
-//Stripe inspo kept from a fork of https://www.openprocessing.org/sketch/645434
+//Stripe inspo kept from a fork of https://www.openprocessing.org/sketch/645434, ended up only using the shapes as a template and not using the class 
 var snowflakes = [];  //random snowflakes 
 var citylights; //city light animation
 var jeep;  //jeep animation
 var jeepLights; //jeep with lights animation
+var spaceJeep; 
 var mountains; //mountain animation
 var chair; //chair animation
 var umbrella; //umbrella animation
@@ -21,6 +21,7 @@ var waves; //wave animation
 var space; //space background
 var buildings; //building background
 var clouds; //cloud animation
+var bridge; //bridge animation
 var tall; 
 var wavesound; 
 var trafficsound;
@@ -48,6 +49,7 @@ function preload(){
 	//var car = jeep.addAnimation('rumble', Jeep001.png, Jeep009.png); //MAKE THIS A SPRITE 
 	jeep = loadAnimation('Jeep001.png','Jeep009.png');
 	jeepLights = loadAnimation ('JeepLights001.png' , 'JeepLights009.png');
+	spaceJeep = loadAnimation('spaceJeep001.png', 'spaceJeep016.png');
 	mount = loadAnimation('Mountains001.png');
 	chair = loadAnimation('beachChair001.png');
 	umbrella = loadAnimation('umbrella.png');
@@ -56,6 +58,7 @@ function preload(){
 	clouds = loadAnimation('clouds001.png');
 	waves = loadAnimation('wave001.png', 'wave006.png');
 	buildings = loadAnimation('buildings001.png');
+	bridge = loadAnimation('bridge001.png');
 	wavesound = loadSound('wavecrash001.mp3');
 	trafficsound = loadSound('traffic001.mp3');
 	tunersound = loadSound('tuner001.mp3'); 
@@ -92,7 +95,7 @@ translate(width/2,height/2);
 
 function draw() {
 	
-	//frameRate(30); MAYBE
+	frameRate(30);
 
 	 switch(clicks){
         case 1:
@@ -300,7 +303,7 @@ function drawSpace(){
 	scale(0.4);
 	animation(space, 1800, 1000); //space background
 	pop();
-	animation(jeepLights, width/2, height/2); //jeep with lights on 
+	drawSpaceJeep();
 }
 
 
@@ -308,11 +311,13 @@ function drawSpace(){
 //I want to add a beeping and honking sound effect behind whatever music is playing or being tuned at the time 
 function city(){ //I wanna draw this myself cuz its flippin ugly 
 		
-	drawRoad(); 
+	background('#6351E8');
 	push();
 	scale(1.75);
 	animation(buildings, 400, height/6);
 	pop();
+	drawCityRoad(); 
+	drawBridge();
 	animation(jeep, width/2, height/2);
 	
 	push();
@@ -326,8 +331,34 @@ function city(){ //I wanna draw this myself cuz its flippin ugly
 	trafficsound.play();
 }
 
+function drawBridge(){
+	
+	push();
+	scale(0.6);
+	animation(bridge, 1200, 750);
+	pop();
+	
+}
 
-//I think I need to make this a class so that the sky and ground colors can change 
+
+function drawCityRoad(){
+	
+		push();
+    translate(width/2,height/2); //middle of screen
+	 // background('#BFBEBB'); //background color (for now) 
+	  fill('#5194E8'); //fill color (for now)
+    rectMode(CORNER); //corner mode of rect
+		noStroke();
+    rect(-width/2,0,width,height/2); //rect the size of the bottom half of the screen
+    fill('#807E7D'); //road color
+    quad(6,0,-5,0,-width/2,height/2,width/2,height/2); //rect for road 
+		fill('#BFBA2E');
+    quad(-60,height/2,-15,height/2,0,0,-0.5,0); //left yellow line 
+    quad(60,height/2,15,height/2,0,0,0.5,0); //right yellow line 
+		pop();	
+}
+
+
 function drawWinterRoad(){
 	
 		push();
@@ -366,7 +397,7 @@ function drawRoad(){
 	
 }
 
-function drawClouds(){ //make this a sprite, just wanted to get it in 
+function drawClouds(){  
 	
 	push();
 	scale(0.3);
@@ -405,7 +436,13 @@ function drawCar(){ //no lights on
 
 }
 
-function drawMount(){ //need to fix since it's in front of the jeep, make it rise up 
+function drawSpaceJeep(){
+	
+	animation(spaceJeep, width/2, height/2);
+	
+}
+
+function drawMount(){ //make it rise up 
 	//background(0);
 	push();
 	scale(0.45);
