@@ -1,28 +1,32 @@
 //RoadTrip
-//the audio throughout will be a set playlist of songs that can be "tuned through" using the up and down arrow keys
+//the audio throughout will be a set playlist of songs that can be "tuned through" using the left and right arrow keys
 //between each song will be radio interference/tuning noises 
 //each scene will have its own ambient audio that will not be controlled by the user 
 //using a switch function, the user will be able to pick through the scenes they want to view while listening to the music they "tune" to 
 
+//since I'm having trouble refining the readio at the moment, I am making one more scene for the car to drive through
 
-//MAKE RADIO GO BACK TO 1 
-//make mountain rise 
+//Stripe inspo kept from a fork of https://www.openprocessing.org/sketch/645434, ended up only using the 
+//shapes as a template for the road/roadlines and not using the class 
 
-//Stripe inspo kept from a fork of https://www.openprocessing.org/sketch/645434, ended up only using the shapes as a template and not using the class 
 var snowflakes = [];  //random snowflakes 
+var bubbles = []; //random bubbles
 var citylights; //city light animation
 var jeep;  //jeep animation
 var jeepLights; //jeep with lights animation
-var spaceJeep; 
+var spaceJeep; //spinning jeep
 var mountains; //mountain animation
 var chair; //chair animation
 var umbrella; //umbrella animation
 var waves; //wave animation
 var space; //space background
+var bikini;
 var buildings; //building background
 var clouds; //cloud animation
 var bridge; //bridge animation
+var sign;
 var tall; 
+var bubblesound;
 var wavesound; 
 var trafficsound;
 var tunersound;
@@ -39,14 +43,12 @@ var truelove;
 var wait;
 var tuneNum;
 var clicks = 0;
-var max = 20;
-var min = 1; 
+var song_max = 20;
+var song_min = 1; 
 var songCount = 0;
 
 function preload(){
 	
-	//jeep = createSprite(width/2, height/2, , );
-	//var car = jeep.addAnimation('rumble', Jeep001.png, Jeep009.png); //MAKE THIS A SPRITE 
 	jeep = loadAnimation('Jeep001.png','Jeep009.png');
 	jeepLights = loadAnimation ('JeepLights001.png' , 'JeepLights009.png');
 	spaceJeep = loadAnimation('spaceJeep001.png', 'spaceJeep016.png');
@@ -55,13 +57,16 @@ function preload(){
 	umbrella = loadAnimation('umbrella.png');
 	citylights = loadAnimation('sparkle001.png', 'sparkle003.png');
 	space = loadAnimation('space001.png','space010.png');
+	bikini = loadAnimation('bikini001.png');
 	clouds = loadAnimation('clouds001.png');
 	waves = loadAnimation('wave001.png', 'wave006.png');
 	buildings = loadAnimation('buildings001.png');
+	sign = loadAnimation('sign001.png');
 	bridge = loadAnimation('bridge001.png');
 	wavesound = loadSound('wavecrash001.mp3');
 	trafficsound = loadSound('traffic001.mp3');
-	tunersound = loadSound('tuner001.mp3'); 
+	bubblesound = loadSound('bubblesound.mp3');
+	tunersound = loadSound('tuner002.mp3'); 
 	walkinhere = loadSound('walkin001.mp3');
 	carey = loadSound('carey001.mp3');
 	checkyes = loadSound('checkyes001.mp3');
@@ -90,15 +95,28 @@ translate(width/2,height/2);
 			wh = random(3, 10); //random width/height 
 			snowflakes.push(new Snow(xPos, yPos, speedX, speedY, wh, wh, c));
 		}
+	
+		for(var x = 0; x < 50; x++){
+			xPos = random((width/3),(width*2)/3);
+			yPos = random(height/2, height/4);
+			speedY = random(5, 10);
+			speedX = random(0.01, 0.03);
+			c = color(135, 228, 255, random(20, 50));
+			wh = random(15, 40);
+			bubbles.push(new Bubbles(xPos, yPos, speedX, speedY, wh, wh, c));
+		}
 }
 
 
 function draw() {
 	
 	frameRate(30);
-
+	
+	//wanted to automate the switching so that scenes are dependent on time and not on mouse clicks, ran out of time 
+	
 	 switch(clicks){
         case 1:
+			 			bubblesound.stop();
 			 			background(0);
             snow();
             break;
@@ -112,8 +130,13 @@ function draw() {
 						city();
             break;
 				case 4:
-						walkinhere.stop();
-						trafficsound.stop();
+			 			trafficsound.stop();
+			 			walkinhere.stop();
+						background(0);
+			 			sea();
+			 			break;
+		 		case 5:
+			 			bubblesound.stop();
 						background(0);
 						drawSpace();
 						break;
@@ -121,9 +144,9 @@ function draw() {
 			}
 	
 	 	switch(songCount){
-			
 			case 1:
 				wait.stop();
+				truelove.stop();
 				tunersound.playMode('untilDone');
 				tunersound.play();
 				break;
@@ -134,26 +157,31 @@ function draw() {
 				break;
 			case 3:
 				truelove.stop();
+				carey.stop();
 				tunersound.playMode('untilDone');
 				tunersound.play();
 				break;
 			case 4:
 				tunersound.stop();
+				carey.setVolume(0.6);
 				carey.playMode('untilDone');
 				carey.play();
 				break;
 			case 5:
 				carey.stop();
+				checkyes.stop();
 				tunersound.playMode('untilDone');
 				tunersound.play();
 				break;
 			case 6:
 				tunersound.stop();
+				checkyes.setVolume(0.6);
 				checkyes.playMode('untilDone');
 				checkyes.play();
 				break;
 			case 7:
 				checkyes.stop();
+				complicated.stop();
 				tunersound.playMode('untilDone');
 				tunersound.play();
 				break;	
@@ -164,6 +192,7 @@ function draw() {
 				break;
 			case 9:
 				complicated.stop();
+				fivehundred.stop();
 				tunersound.playMode('untilDone');
 				tunersound.play();
 				break;	
@@ -174,87 +203,114 @@ function draw() {
 				break;
 			case 11:
 				fivehundred.stop();
+				home.stop();
 				tunersound.playMode('untilDone');
 				tunersound.play();
 				break;
 			case 12:
 				tunersound.stop();
+				home.setVolume(0.5);
 				home.playMode('untilDone');
 				home.play();
 				break;
 			case 13:
 				home.stop();
+				houdini.stop();
 				tunersound.playMode('untilDone');
 				tunersound.play();
 				break;
 			case 14:
 				tunersound.stop();
+				houdini.setVolume(0.5);
 				houdini.playMode('untilDone');
 				houdini.play();
 				break;
 			case 15:
 				houdini.stop();
+				neverreallyover.stop();
 				tunersound.playMode('untilDone');
 				tunersound.play();
 				break;
 			case 16:
 				tunersound.stop();
+				neverreallyover.setVolume(0.6);
 				neverreallyover.playMode('untilDone');
 				neverreallyover.play();
 				break;
 			case 17:
 				neverreallyover.stop();
+				ny.stop();
 				tunersound.playMode('untilDone');
 				tunersound.play();
 				break;
 			case 18:
 				tunersound.stop();
+				ny.setVolume(0.6);
 				ny.playMode('untilDone');
 				ny.play();
 				break;
 			case 19:
 				ny.stop();
+				wait.stop();
 				tunersound.playMode('untilDone');
 				tunersound.play();
 				break;
 			case 20:
 				tunersound.stop();
+				wait.setVolume(0.5);
 				wait.playMode('untilDone');
 				wait.play();
 				break;
-			
+		
 	}
 
 		}
 
+
 function mouseClicked(){
 		
-		clicks +=1;
-		if(clicks == 5){
+		clicks += 1;
+		if(clicks == 6){
 			clicks = 1;
 		}
 		
 	}
 
+
 function keyPressed(){
 	
-
 		if (keyCode === RIGHT_ARROW){
 			songCount += 1;
+			if(songCount > song_max){
+				songCount = song_min;
+			}
 		}
 		if(keyCode === LEFT_ARROW){
-		songCount -= 1; 
+			songCount -= 1; 
+			if(songCount < song_min){
+				songCount = song_max;
+			}
 		}
-		if(songCount > max){
-			songCount = 1;
-		}
-		if(songCount < min){
-			songCount = 20;
-		}
-	
 }
 
-
+//I want to have an under water scene with coral and bubbles 
+//bubble sounds 
+function sea(){
+	
+	animation(bikini, width/2, height/2);
+	animation(jeepLights, width/2, height/2);
+	animation(sign, width/2, height/2);
+	bubblesound.setVolume(0.3);
+	bubblesound.playMode('untilDone');
+	bubblesound.play();
+	
+	for(var i = 0; i < bubbles.length; i++){
+		bubbles[i].move();
+		bubbles[i].show();
+		bubbles[i].makeMore();
+	}
+	
+}
 
 //I want to have one half of the road to have some beach chairs and an umbrella
 //I want the other half of the beach to have a rolling wave shoreline 
@@ -267,7 +323,7 @@ function beach(){
 	drawClouds();
 	drawChairs();
 	drawWaves();
-	wavesound.setVolume(.5);
+	wavesound.setVolume(0.3);
 	wavesound.playMode('untilDone'); //make this a little quieter
 	wavesound.play();
 	
@@ -309,6 +365,7 @@ function drawSpace(){
 
 //I want to add my sparkle animation so the buildings look like they're shining 
 //I want to add a beeping and honking sound effect behind whatever music is playing or being tuned at the time 
+
 function city(){ //I wanna draw this myself cuz its flippin ugly 
 		
 	background('#6351E8');
@@ -325,8 +382,10 @@ function city(){ //I wanna draw this myself cuz its flippin ugly
 	animation(citylights, width/1.7, height/1.3); //this doesn't look very nice so I'm gonna fix that 
 	pop();
 	
+	walkinhere.setVolume(0.5);
 	walkinhere.playMode('untilDone');
 	walkinhere.play();
+	trafficsound.setVolume(0.3);
 	trafficsound.playMode('untilDone');
 	trafficsound.play();
 }
@@ -454,7 +513,66 @@ function drawMount(){ //make it rise up
 	pop();
 }
 
+class Snow{
+	constructor(x, y, sX, sY, w, h, c){
+		this.xPosi = x;
+		this.yPosi = y;
+		this.xSpeed = sX;
+		this.ySpeed = sY;
+		this.width = w;
+		this.height = h;
+		this.col = c;
+		// console.log("constructor",x,y)
+	}
 
+	move(){
+		this.xPosi += this.xSpeed;
+		this.yPosi += this.ySpeed;
+	}
+
+	show(){
+		noStroke();
+		fill(this.col);
+		ellipse(this.xPosi, this.yPosi, this.width, this.height);
+	}
+
+	makeMore(){
+		if(this.yPosi > height){
+			this.yPosi = 0;
+		}
+	}
+}
+
+
+class Bubbles{
+constructor(x, y, sX, sY, w, h, c){
+		this.xPosi = x;
+		this.yPosi = y;
+		this.xSpeed = sX;
+		this.ySpeed = sY;
+		this.width = w;
+		this.height = h;
+		this.col = c;
+	}
+
+	move(){
+		this.xPosi -= this.xSpeed;
+		this.yPosi -= this.ySpeed;
+	}
+
+	show(){
+		stroke('#87FF9F');
+		strokeWeight(3);
+		fill(this.col);
+		ellipse(this.xPosi, this.yPosi, this.width, this.height);
+	}
+
+	makeMore(){
+		if(this.yPosi < 0){
+			this.yPosi = height/2;
+		}
+	}
+}
 	
 	
 	
